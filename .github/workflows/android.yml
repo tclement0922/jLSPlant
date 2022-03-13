@@ -1,0 +1,95 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/**'
+      - 'demo/**'
+      - 'java-lsplant/**'
+      - 'dobby/**'
+      - 'gradle/**'
+      - '**.gradle'
+      - '**.gradle.kts'
+      - 'gradle.properties'
+      - 'versions.properties'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '.github/**'
+      - 'demo/**'
+      - 'java-lsplant/**'
+      - 'dobby/**'
+      - 'gradle/**'
+      - '**.gradle'
+      - '**.gradle.kts'
+      - 'gradle.properties'
+      - 'versions.properties'
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+      - name: Install Android SDK
+        uses: malinskiy/action-android/install-sdk@release/0.1.2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      - name: Install Cmake
+        run: sudo apt install cmake
+      - name: Install Ninja
+        run: sudo apt install ninja-build
+      - name: Declare Cmake version in gradle.properties
+        run: cat gradle.properties | sed "s/version_cmake=.*/version_cmake=$(cmake --version | sed -n -e 's/cmake version //p')/g" > gradle.properties
+      # Fixes https://issuetracker.google.com/issues/206099937
+      - name: Add Ninja link to /usr/local/bin
+        run: ln -s /usr/bin/ninja /usr/local/bin/ninja
+      - name: Assemble debug lib with Gradle
+        run: ./gradlew java-lsplant:assembleDebug
+      - name: Assemble release lib with Gradle
+        run: ./gradlew java-lsplant:assembleRelease
+      - name: Assemble debug demo with Gradle
+        run: ./gradlew demo:assembleDebug
+      - name: Assemble release demo with Gradle
+        run: ./gradlew demo:assembleRelease
+      - name: Upload debug lib
+        uses: actions/upload-artifact@v3
+        with:
+          name: lib-debug.aar
+          path: java-lsplant/build/outputs/aar/java-lsplant-debug.aar
+      - name: Upload release lib
+        uses: actions/upload-artifact@v3
+        with:
+          name: lib-release.aar
+          path: java-lsplant/build/outputs/aar/java-lsplant-release.aar
+      - name: Upload debug demo
+        uses: actions/upload-artifact@v3
+        with:
+          name: demo-debug.apk
+          path: demo/build/outputs/apk/debug/demo-debug.apk
+      - name: Upload release demo
+        uses: actions/upload-artifact@v3
+        with:
+          name: demo-release.apk
+          path: demo/build/outputs/apk/release/demo-release-unsigned.apk
+      - name: Automatic CI Release
+        uses: marvinpinto/action-automatic-releases@v1.2.1
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest-ci"
+          prerelease: true
+          title: "Continuous Integration Build"
+          files: |
+            java-lsplant/build/outputs/aar/java-lsplant-debug.aar
+            java-lsplant/build/outputs/aar/java-lsplant-release.aar
+            demo/build/outputs/apk/debug/demo-debug.apk
+            demo/build/outputs/apk/release/demo-release-unsigned.apk

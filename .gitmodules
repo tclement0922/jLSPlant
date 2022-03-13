@@ -1,0 +1,4 @@
+[submodule "dobby-upstream"]
+	path = dobby/src/main/cpp/upstream
+	url = https://github.com/jmpews/Dobby
+	branch = master
