@@ -1,5 +1,5 @@
 # Java-LSPlant
-A unofficial Java implementation of the LSPlant hooking framework.
+An unofficial Java implementation of the LSPlant hooking framework.
 
 The aim of this library is providing a easier way to use the LSPlant framework, without the need to 
 provide an ART symbol resolver and a inline hook framework.
