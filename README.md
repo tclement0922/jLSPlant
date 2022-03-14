@@ -1,4 +1,7 @@
 # Java-LSPlant
+
+[![Android CI](https://github.com/tclement0922/Java-LSPlant/actions/workflows/android.yml/badge.svg?branch=main)](https://github.com/tclement0922/Java-LSPlant/actions/workflows/android.yml)
+
 An unofficial Java implementation of the LSPlant hooking framework.
 
 The aim of this library is providing a easier way to use the LSPlant framework, without the need to 
@@ -20,7 +23,7 @@ support the case where `LSPlant.isInitialized()` returns false.
    > Licensed under the [GNU Lesser General Public License v3.0](https://github.com/LSPosed/LSPlant/blob/master/LICENSE), Copyright (C) 2022 [LSPosed](https://github.com/LSPosed)
    
    Note: Parts of this library is inspired by official LSPlant tests.
- - [Dobby](https://github.com/jmpews/Dobby) used as method hooking framework:
+ - [Dobby](https://github.com/jmpews/Dobby) used as inline hook framework:
    > Dobby is a lightweight, multi-platform, multi-architecture exploit hook framework.
    > Licensed under the [Apache License 2.0](https://github.com/jmpews/Dobby/blob/master/LICENSE), Copyright (C) [jmpews](https://github.com/jmpews)
  - Some files are based on [Pine](https://github.com/canyie/pine):
