@@ -49,7 +49,7 @@ jobs:
       - name: Install Ninja
         run: sudo apt install ninja-build
       - name: Declare Cmake version in gradle.properties
-        run: cat build.gradle.kts | sed "s/val cmakeVersionName by extra\(.*\)/val cmakeVersionName by extra\($(cmake --version | sed -n -e 's/cmake version //p')\)/g" > gradle.properties
+        run: cat build.gradle.kts | sed "s/val androidCmakeVersion by extra\(.*\)/val androidCmakeVersion by extra\(\"$(cmake --version | sed -n -e 's/cmake version //p')\"\)/g" > gradle.properties
       # Fixes https://issuetracker.google.com/issues/206099937
       - name: Add Ninja link to /usr/local/bin
         run: ln -s /usr/bin/ninja /usr/local/bin/ninja

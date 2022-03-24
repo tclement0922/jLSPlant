@@ -3,16 +3,21 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
-val libVersionName: String by rootProject.extra
+val androidBuildToolsVersion: String by rootProject.extra
+val androidCompileSdkVersion: Int by rootProject.extra
+val androidMinSdkVersion: Int by rootProject.extra
+val androidTargetSdkVersion: Int by rootProject.extra
 val libVersionCode: Int by rootProject.extra
+val libVersionName: String by rootProject.extra
 
 android {
-    compileSdk = 32
+    compileSdk = androidCompileSdkVersion
+    buildToolsVersion = androidBuildToolsVersion
 
     defaultConfig {
         applicationId = "dev.tclement.jlsplant.demo"
-        minSdk = 21
-        targetSdk = 32
+        minSdk = androidMinSdkVersion
+        targetSdk = androidTargetSdkVersion
         versionCode = libVersionCode
         versionName = libVersionName
     }

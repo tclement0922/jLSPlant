@@ -19,19 +19,24 @@
  * Copyright (C) 2022 T. Clément <https://github.com/tclement0922>
  */
 
-val cmakeVersionName: String by rootProject.extra
-val ndkVersionName: String by rootProject.extra
+val androidBuildToolsVersion: String by rootProject.extra
+val androidCmakeVersion: String by rootProject.extra
+val androidCompileSdkVersion: Int by rootProject.extra
+val androidMinSdkVersion: Int by rootProject.extra
+val androidNdkVersion: String by rootProject.extra
+val androidTargetSdkVersion: Int by rootProject.extra
 
 plugins {
     id("com.android.library")
 }
 
 android {
-    compileSdk = 32
+    compileSdk = androidCompileSdkVersion
+    buildToolsVersion = androidBuildToolsVersion
 
     defaultConfig {
-        minSdk = 21
-        targetSdk = 32
+        minSdk = androidMinSdkVersion
+        targetSdk = androidTargetSdkVersion
 
         consumerProguardFiles("consumer-rules.pro")
         externalNativeBuild {
@@ -63,7 +68,7 @@ android {
     externalNativeBuild {
         cmake {
             path = file("src/main/cpp/CMakeLists.txt")
-            version = cmakeVersionName
+            version = androidCmakeVersion
         }
     }
     buildFeatures {
@@ -79,7 +84,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    ndkVersion = ndkVersionName
+    ndkVersion = androidNdkVersion
 }
 
 dependencies {

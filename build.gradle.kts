@@ -23,7 +23,11 @@ plugins {
     id("org.jetbrains.kotlin.android") apply false
 }
 
-val cmakeVersionName by extra("3.22.1")
-val ndkVersionName by extra("23.1.7779620")
-val libVersionName by extra("3.1-01")
+val androidBuildToolsVersion by extra("32.0.0")
+val androidCmakeVersion by extra("3.22.1")
+val androidCompileSdkVersion by extra(32)
+val androidMinSdkVersion by extra(21)
+val androidNdkVersion by extra("23.1.7779620")
+val androidTargetSdkVersion by extra(32)
 val libVersionCode by extra(30001)
+val libVersionName by extra("3.1-01")
