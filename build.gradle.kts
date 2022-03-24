@@ -18,11 +18,12 @@
  */
 
 plugins {
-    id("com.android.application") version "7.2.0-beta02" apply false
-    id("com.android.library") version "7.2.0-beta02" apply false
+    id("com.android.application") apply false
+    id("com.android.library") apply false
     id("org.jetbrains.kotlin.android") apply false
 }
 
-tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
-}
+val cmakeVersionName by extra("3.22.1")
+val ndkVersionName by extra("23.1.7779620")
+val libVersionName by extra("3.1-01")
+val libVersionCode by extra(30001)

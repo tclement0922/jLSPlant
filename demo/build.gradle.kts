@@ -3,6 +3,9 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+val libVersionName: String by rootProject.extra
+val libVersionCode: Int by rootProject.extra
+
 android {
     compileSdk = 32
 
@@ -10,8 +13,8 @@ android {
         applicationId = "dev.tclement.jlsplant.demo"
         minSdk = 21
         targetSdk = 32
-        versionCode = 30001
-        versionName = "3.0-j1"
+        versionCode = libVersionCode
+        versionName = libVersionName
     }
 
     buildTypes {

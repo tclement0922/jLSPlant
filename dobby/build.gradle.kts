@@ -19,8 +19,8 @@
  * Copyright (C) 2022 T. Clément <https://github.com/tclement0922>
  */
 
-val version_cmake: String by rootProject
-val version_ndk: String by rootProject
+val cmakeVersionName: String by rootProject.extra
+val ndkVersionName: String by rootProject.extra
 
 plugins {
     id("com.android.library")
@@ -64,7 +64,7 @@ android {
         cmake {
             path = file("src/main/cpp/CMakeLists.txt")
             // Using system cmake to make it compile
-            version = version_cmake
+            version = cmakeVersionName
         }
     }
     buildFeatures {
@@ -80,7 +80,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    ndkVersion = version_ndk
+    ndkVersion = ndkVersionName
 }
 
 dependencies {
