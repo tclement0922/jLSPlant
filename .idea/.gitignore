@@ -1,3 +1,8 @@
-# Default ignored files
+/caches
+/libraries
 /shelf/
+/assetWizardSettings.xml
+/discord.xml
+/modules.xml
+/navEditor.xml
 /workspace.xml
