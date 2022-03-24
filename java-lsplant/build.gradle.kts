@@ -62,6 +62,6 @@ android {
 }
 
 dependencies {
-    implementation("org.lsposed.lsplant:lsplant:_")
     implementation(project(":dobby"))
+    implementation(project(":lsplant"))
 }

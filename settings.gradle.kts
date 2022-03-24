@@ -20,4 +20,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Java-LSPlant"
 
-include(":demo", ":java-lsplant", "dobby")
+include(":demo", ":java-lsplant", "lsplant", "dobby")

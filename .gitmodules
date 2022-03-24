@@ -2,3 +2,7 @@
 	path = dobby/src/main/cpp/upstream
 	url = https://github.com/jmpews/Dobby
 	branch = master
+[submodule "lsplant-upstream"]
+	path = lsplant/src/main/upstream
+	url = https://github.com/LSPosed/LSPlant
+	branch = master
