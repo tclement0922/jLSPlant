@@ -80,7 +80,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: demo-release.apk
-          path: demo/build/outputs/apk/release/demo-release-unsigned.apk
+          path: demo/build/outputs/apk/release/demo-release.apk
       - name: Automatic CI Release
         uses: marvinpinto/action-automatic-releases@v1.2.1
         with:
@@ -92,4 +92,4 @@ jobs:
             java-lsplant/build/outputs/aar/java-lsplant-debug.aar
             java-lsplant/build/outputs/aar/java-lsplant-release.aar
             demo/build/outputs/apk/debug/demo-debug.apk
-            demo/build/outputs/apk/release/demo-release-unsigned.apk
+            demo/build/outputs/apk/release/demo-release.apk
