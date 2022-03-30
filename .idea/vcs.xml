@@ -3,5 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/dobby/src/main/cpp/upstream" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lsplant/src/main/upstream" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lsplant/src/main/upstream/lsplant/src/main/jni/external/dex_builder" vcs="Git" />
   </component>
 </project>

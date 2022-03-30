@@ -26,9 +26,10 @@ support the case where `LSPlant.isInitialized()` returns false.
  - [Dobby](https://github.com/jmpews/Dobby) used as inline hook framework:
    > Dobby is a lightweight, multi-platform, multi-architecture exploit hook framework.
    > Licensed under the [Apache License 2.0](https://github.com/jmpews/Dobby/blob/master/LICENSE), Copyright (C) [jmpews](https://github.com/jmpews)
- - Some files are based on [Pine](https://github.com/canyie/pine):
+
+ - [Pine](https://github.com/canyie/pine) for its elf image parser:
    > Pine is a dynamic java method hook framework on ART runtime, it can intercept almost all java method calls in this process.
    > Licensed under the [Anti 996 License v1.0](https://github.com/996icu/996.ICU/blob/master/LICENSE), Copyright (C) [canyie](https://github.com/canyie)
  
 ### License
-Java-LSPlant is licensed under the [GNU Lesser General Public License v3.0](LICENSE), Copyright (C) 2022 T.Clément.
+Java-LSPlant is licensed under the [GNU Lesser General Public License v3.0](LICENSE), Copyright (C) 2022 T. Clément.
