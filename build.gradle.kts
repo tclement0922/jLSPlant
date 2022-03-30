@@ -24,7 +24,7 @@ plugins {
 }
 
 val androidBuildToolsVersion by extra("32.0.0")
-val androidCmakeVersion by extra("3.22.1")
+val androidCmakeVersion by extra("3.22.1") // Replace by your installed cmake version (cmake --version)
 val androidCompileSdkVersion by extra(32)
 val androidMinSdkVersion by extra(21)
 val androidNdkVersion by extra("23.1.7779620")
