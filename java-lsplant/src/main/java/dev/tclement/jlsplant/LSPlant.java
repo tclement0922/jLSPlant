@@ -32,7 +32,7 @@ import java.util.Map;
  * Java interface for LSPlant
  */
 @SuppressWarnings("unused")
-public class LSPlant {
+public final class LSPlant {
     /**
      * Every created hookers are stored there.
      */
@@ -52,8 +52,6 @@ public class LSPlant {
         }
     }
 
-    private static native boolean isNativeInitialized();
-
     /**
      * Checks the current LSPlant initialization status. Causes of non-initialization may be more
      * likely device incompatibility, native lib not being loaded for some reason (see logcat),
@@ -62,25 +60,25 @@ public class LSPlant {
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean isInitialized() {
-        return isLibLoaded && isNativeInitialized();
+        return isLibLoaded && Native.isNativeInitialized();
     }
 
     /**
      * Hook a Java method by providing the {@code target} method together with the context object
      * {@code owner} and its callback {@code replacement}.
      * @param owner The hooker object to store the context of the hook. Null if replacement is
-     *              static. The most likely usage is to store the {@code backup} method into it so
-     *              that when {@code replacement} is invoked, it can call the original method.
-     *              Another scenario is that, for example, in Xposed framework, multiple modules can
+     *              static. The most likely usage is, in Xposed framework, multiple modules can
      *              hook the same Java method and the {@code owner} can be used to store all the
      *              callbacks to allow multiple modules work simultaneously without conflict.
      * @param target The method you want to hook. Must not be null.
      * @param replacement The callback method to the {@code owner} object is used to replace the
      *                    {@code target} method. Whenever the {@code target} method is invoked, the
      *                    {@code replacement} method will be invoked instead of the original
-     *                    {@code target} method.
+     *                    {@code target} method. The return type must be the same as the original
+     *                    method and the parameter type must be {@link Hooker.MethodCallback}.
      * @return If the hook succeed, {@code true}, otherwise {@code false}.
      * @see #hookMethod(Member, Method)
+     * @see #hookMethodAdvanced(Object, Member, Method)
      * @see #unhookMethod(Member)
      * @implNote This function is thread safe (you can call it simultaneously from multiple thread)
      *           but it's not atomic to the same {@code target} method. That means
@@ -99,6 +97,41 @@ public class LSPlant {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Hook a Java method by providing the {@code target} method together with the context object
+     * {@code owner} and its callback {@code replacement}.
+     * @param owner The hooker object to store the context of the hook. Null if replacement is
+     *              static. The most likely usage is to store the {@code backup} method into it so
+     *              that when {@code replacement} is invoked, it can call the original method.
+     *              Another scenario is that, for example, in Xposed framework, multiple modules can
+     *              hook the same Java method and the {@code owner} can be used to store all the
+     *              callbacks to allow multiple modules work simultaneously without conflict.
+     * @param target The method you want to hook. Must not be null.
+     * @param replacement The callback method to the {@code owner} object is used to replace the
+     *                    {@code target} method. Whenever the {@code target} method is invoked, the
+     *                    {@code replacement} method will be invoked instead of the original
+     *                    {@code target} method. The return type must be the same as the original
+     *                    method and the parameter type must be {@code Object[]}. {@code args[0]} is
+     *                    the {@code this} object for non-static methods and there is NOT null this
+     *                    object placeholder for static methods.
+     * @return The backup of the original method. Should be stored in the {@code owner} object.
+     * @see #hookMethod(Object, Member, Method)
+     * @see #hookMethod(Member, Method)
+     * @see #unhookMethod(Member)
+     * @implNote This function is thread safe (you can call it simultaneously from multiple thread)
+     *           but it's not atomic to the same {@code target} method. That means
+     *           {@link #unhookMethod} or {@link #isHooked} does not guarantee to work properly on
+     *           the same {@code target} method before it returns. Also, simultaneously call on this
+     *           function with the same {@code target} method does not guarantee only one will
+     *           success. If you call this with different {@code owner} object on the same
+     *           {@code target} method simultaneously, the behavior is undefined.
+     */
+    public static Method hookMethodAdvanced(Object owner, Member target, Method replacement) {
+        if (!isInitialized())
+            return null;
+        return Native.hookMethod(owner, target, replacement);
     }
 
 
@@ -139,13 +172,10 @@ public class LSPlant {
             var hooker = hookers.get(memberName);
             if (hooker != null) {
                 hookers.remove(memberName);
-                return hooker.unhookMethod(hooker.target);
             }
         }
-        return false;
+        return Native.unhookMethod(target);
     }
-
-    private static native boolean isHookedInternal(Member target);
 
     /**
      * Check if a Java function is hooked by LSPlant or not.
@@ -156,10 +186,8 @@ public class LSPlant {
      * @see #unhookMethod(Member)
      */
     public static boolean isHooked(Member target) {
-        return isInitialized() && isHookedInternal(target);
+        return isInitialized() && Native.isHooked(target);
     }
-
-    private static native boolean deoptimizeInternal(Member target);
 
     /**
      * Deoptimize a method to avoid hooked callee not being called because of inline.
@@ -178,10 +206,8 @@ public class LSPlant {
      *           perform on the backup method instead.
      */
     public static boolean deoptimize(Member target) {
-        return isInitialized() && deoptimizeInternal(target);
+        return isInitialized() && Native.deoptimize(target);
     }
-
-    private static native boolean makeClassInheritableInternal(Class<?> target);
 
     /**
      * Make a class inheritable. It will make the class non-final and make all its private
@@ -190,7 +216,7 @@ public class LSPlant {
      * @return If the operation has succeed, {@code true}, otherwise {@code false}.
      */
     public static boolean makeClassInheritable(Class<?> target) {
-        return isInitialized() && makeClassInheritableInternal(target);
+        return isInitialized() && Native.makeClassInheritable(target);
     }
 
     // Inspired by LSPlant tests
@@ -228,10 +254,6 @@ public class LSPlant {
 
         private Hooker() {}
 
-        private native Method hookMethod(Member original, Method callback);
-
-        private native boolean unhookMethod(Member target);
-
         /**
          * Used by reflection.
          */
@@ -244,7 +266,7 @@ public class LSPlant {
             Hooker hooker = new Hooker();
             try {
                 var callbackMethod = Hooker.class.getDeclaredMethod("callback", Object[].class);
-                var result = hooker.hookMethod(target, callbackMethod);
+                var result = Native.hookMethod(hooker, target, callbackMethod);
                 if (result == null) throw new LSPlantHookFailed();
                 hooker.owner = owner;
                 hooker.backup = result;

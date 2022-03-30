@@ -27,7 +27,7 @@ import java.lang.reflect.Method;
 /**
  * Java-LSPlant internal utils
  */
-class Utils {
+final class Utils {
     // Edit of Arrays.toString that removes braces.
     static String arrayToString(Object[] a) {
         if (a == null)

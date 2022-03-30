@@ -44,43 +44,43 @@ bool initialized;
 
 extern "C"
 JNIEXPORT jboolean JNICALL
-Java_dev_tclement_jlsplant_LSPlant_isNativeInitialized([[maybe_unused]] JNIEnv *env, [[maybe_unused]] jclass clazz) {
+Java_dev_tclement_jlsplant_Native_isNativeInitialized([[maybe_unused]] JNIEnv *env, [[maybe_unused]] jclass clazz) {
     return initialized;
 }
 
 extern "C"
 JNIEXPORT jobject JNICALL
-Java_dev_tclement_jlsplant_LSPlant_00024Hooker_hookMethod(JNIEnv *env, jobject thiz,
-                                                          jobject original, jobject callback) {
-    return lsplant::v1::Hook(env, original, thiz, callback);
+Java_dev_tclement_jlsplant_Native_hookMethod(JNIEnv *env, [[maybe_unused]] jclass clazz, jobject owner,
+                                                          jobject original, jobject replacement) {
+    return lsplant::Hook(env, original, owner, replacement);
 }
 
 extern "C"
 JNIEXPORT jboolean JNICALL
-Java_dev_tclement_jlsplant_LSPlant_00024Hooker_unhookMethod(JNIEnv *env, [[maybe_unused]] jobject thiz,
+Java_dev_tclement_jlsplant_Native_unhookMethod(JNIEnv *env, [[maybe_unused]] jclass clazz,
                                                             jobject target) {
-    return lsplant::v1::UnHook(env, target);
+    return lsplant::UnHook(env, target);
 }
 
 extern "C"
 JNIEXPORT jboolean JNICALL
-Java_dev_tclement_jlsplant_LSPlant_deoptimizeInternal(JNIEnv *env, [[maybe_unused]] jclass clazz,
+Java_dev_tclement_jlsplant_Native_deoptimize(JNIEnv *env, [[maybe_unused]] jclass clazz,
                                                             jobject target) {
-    return lsplant::v1::Deoptimize(env, target);
+    return lsplant::Deoptimize(env, target);
 }
 
 extern "C"
 JNIEXPORT jboolean JNICALL
-Java_dev_tclement_jlsplant_LSPlant_isHookedInternal(JNIEnv *env, [[maybe_unused]] jclass clazz,
+Java_dev_tclement_jlsplant_Native_isHooked(JNIEnv *env, [[maybe_unused]] jclass clazz,
                                                       jobject target) {
-    return lsplant::v1::IsHooked(env, target);
+    return lsplant::IsHooked(env, target);
 }
 
 extern "C"
 JNIEXPORT jboolean JNICALL
-Java_dev_tclement_jlsplant_LSPlant_makeClassInheritableInternal(JNIEnv *env, [[maybe_unused]] jclass clazz,
+Java_dev_tclement_jlsplant_Native_makeClassInheritable(JNIEnv *env, [[maybe_unused]] jclass clazz,
                                                     jclass target) {
-    return lsplant::v1::MakeClassInheritable(env, target);
+    return lsplant::MakeClassInheritable(env, target);
 }
 
 JNIEXPORT jint JNICALL
