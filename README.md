@@ -17,6 +17,55 @@ Compatibility isn't guaranteed for every device. Some OEM system modifications, 
 else can break LSPlant, so if you plan to publish an app using this framework, do not forget to
 support the case where `LSPlant.isInitialized()` returns false.
 
+### Example usage
+Download latest jlsplant-release.aar from Releases page, and add it to your project's build.gradle:
+```gradle
+dependencies {
+    implementation(files("path/to/aar/jlsplant-release.aar"))
+}
+```
+
+To hook the method ```exampleMethod(int param)``` from the class ```com.example.Example``` with the method ```exampleMethodReplacement(LSPlant.Hooker.MethodCallback callback)``` from the class ```com.example.Hook```, do:
+```java
+package com.example;
+
+import dev.tclement.jlsplant.LSPlant;
+
+public class Hook {
+
+    public /* maybe static */ Object exampleMethodReplacement(LSPlant.Hooker.MethodCallback callback) {
+        // To use original method
+        callback.backup.invoke(/* params */);
+        
+        // To access original method's 'this', if original method isn't static
+        callback.args[0]
+        
+        // To access original method's 'param' parameter, if original method isn't static
+        callback.args[1]
+        // or if original method is static
+        callback.args[0]
+        
+        return callback.backup.invoke(callback.args[0], 0);;
+    }
+
+    public void hookExampleMethod() {
+        // If exampleMethodReplacement is static.
+        LSPlant.hookMethod(
+            Example.class.getDeclaredMethod("exampleMethod", int.class),
+            Hook.class.getDeclaredMethod("exampleMethodReplacement", LSPlant.Hooker.MethodCallback.class)
+        );
+
+        // If exampleMethodReplacement isn't static.
+        LSPlant.hookMethod(
+            this,
+            Example.class.getDeclaredMethod("exampleMethod", int.class),
+            Hook.class.getDeclaredMethod("exampleMethodReplacement", LSPlant.Hooker.MethodCallback.class)
+        );
+    }
+}
+```
+For more informations and advanced usage, see demo module or read [documentation](https://tclement0922.github.io/jLSPlant).
+
 ### Credits
  - [LSPlant](https://github.com/LSPosed/LSPlant) used as core framework:
    > LSPlant is an Android ART hook library, providing Java method hook/unhook and inline deoptimization.
