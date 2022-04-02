@@ -6,7 +6,7 @@ on:
     paths:
       - '.github/**'
       - 'demo/**'
-      - 'java-lsplant/**'
+      - 'jlsplant/**'
       - 'dobby/**'
       - 'gradle/**'
       - '**.gradle'
@@ -18,7 +18,7 @@ on:
     paths:
       - '.github/**'
       - 'demo/**'
-      - 'java-lsplant/**'
+      - 'jlsplant/**'
       - 'dobby/**'
       - 'gradle/**'
       - '**.gradle'
@@ -54,9 +54,9 @@ jobs:
       - name: Add Ninja link to /usr/local/bin
         run: ln -s /usr/bin/ninja /usr/local/bin/ninja
       - name: Assemble debug lib with Gradle
-        run: ./gradlew java-lsplant:assembleDebug
+        run: ./gradlew jlsplant:assembleDebug
       - name: Assemble release lib with Gradle
-        run: ./gradlew java-lsplant:assembleRelease
+        run: ./gradlew jlsplant:assembleRelease
       - name: Assemble debug demo with Gradle
         run: ./gradlew demo:assembleDebug
       - name: Assemble release demo with Gradle
@@ -65,12 +65,12 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: lib-debug.aar
-          path: java-lsplant/build/outputs/aar/java-lsplant-debug.aar
+          path: jlsplant/build/outputs/aar/jlsplant-debug.aar
       - name: Upload release lib
         uses: actions/upload-artifact@v3
         with:
           name: lib-release.aar
-          path: java-lsplant/build/outputs/aar/java-lsplant-release.aar
+          path: jlsplant/build/outputs/aar/jlsplant-release.aar
       - name: Upload debug demo
         uses: actions/upload-artifact@v3
         with:
@@ -89,7 +89,7 @@ jobs:
           prerelease: true
           title: "Continuous Integration Build"
           files: |
-            java-lsplant/build/outputs/aar/java-lsplant-debug.aar
-            java-lsplant/build/outputs/aar/java-lsplant-release.aar
+            jlsplant/build/outputs/aar/jlsplant-debug.aar
+            jlsplant/build/outputs/aar/jlsplant-release.aar
             demo/build/outputs/apk/debug/demo-debug.apk
             demo/build/outputs/apk/release/demo-release.apk

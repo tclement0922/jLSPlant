@@ -1,6 +1,4 @@
-/**
- * Inspired by https://github.com/vvb2060/dobby-android/blob/master/dobby/build.gradle
- *
+/*
  * This file is part of jLSPlant.
  *
  * This program is free software; you can redistribute it and/or
@@ -28,6 +26,8 @@ val androidTargetSdkVersion: Int by rootProject.extra
 
 plugins {
     id("com.android.library")
+    id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.dokka")
 }
 
 android {
@@ -41,20 +41,7 @@ android {
         consumerProguardFiles("consumer-rules.pro")
         externalNativeBuild {
             cmake {
-                arguments(
-                    "-DCMAKE_BUILD_TYPE=Release",
-                    "-DDOBBY_GENERATE_SHARED=OFF",
-                    "-DDOBBY_DEBUG=OFF",
-                    "-DPlugin.Android.BionicLinkerRestriction=ON",
-                    "-DANDROID_STL=none",
-                    "-DVERSION_REVISION=${defaultConfig.versionCode}",
-                    "-DCMAKE_C_FLAGS_RELEASE=-Oz",
-                    "-DCMAKE_CXX_FLAGS_RELEASE=-Oz"
-                )
-                cFlags(
-                    "-Wno-builtin-macro-redefined",
-                    "-D__FILE__=__FILE_NAME__"
-                )
+                arguments("-DANDROID_STL=c++_shared")
             }
         }
     }
@@ -73,37 +60,24 @@ android {
     }
     buildFeatures {
         prefab = true
-        prefabPublishing = true
-    }
-    prefab {
-        register("dobby") {
-            headers = "${project.buildDir}/headers/"
-        }
+        buildConfig = false
+        androidResources = false
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
     ndkVersion = androidNdkVersion
 }
 
+tasks.dokkaHtml.configure {
+    outputDirectory.set(rootDir.resolve("docs"))
+}
+
 dependencies {
-    implementation("dev.rikka.ndk.thirdparty:cxx:_")
-}
-
-tasks.create("copyHeaders", Sync::class) {
-    into("${project.buildDir}/headers/")
-    from("src/main/cpp/upstream/include") {
-        include("*.h")
-    }
-    from("src/main/cpp/upstream/builtin-plugin/BionicLinkerRestriction") {
-        include("*.h")
-    }
-    from("src/main/cpp/upstream/builtin-plugin/SymbolResolver") {
-        include("*.h")
-    }
-}
-
-tasks.getByName("preBuild") {
-    dependsOn("copyHeaders")
+    implementation(project(":dobby"))
+    implementation(project(":lsplant"))
 }

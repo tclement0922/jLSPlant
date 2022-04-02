@@ -1,0 +1,1 @@
+sourceset_dependencies='{":jlsplant:dokkaHtml/androidTestRelease":[],":jlsplant:dokkaHtml/debug":[],":jlsplant:dokkaHtml/main":[],":jlsplant:dokkaHtml/release":[],":jlsplant:dokkaHtml/testFixtures":[],":jlsplant:dokkaHtml/testFixturesDebug":[],":jlsplant:dokkaHtml/testFixturesRelease":[]}'

@@ -1,5 +1,5 @@
 /**
- * This file is part of Java-LSPlant.
+ * This file is part of jLSPlant.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

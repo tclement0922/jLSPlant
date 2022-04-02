@@ -1,6 +1,6 @@
-# Java-LSPlant
+# jLSPlant
 
-[![Android CI](https://github.com/tclement0922/Java-LSPlant/actions/workflows/android.yml/badge.svg?branch=main)](https://github.com/tclement0922/Java-LSPlant/actions/workflows/android.yml)
+[![Android CI](https://github.com/tclement0922/jLSPlant/actions/workflows/android.yml/badge.svg?branch=main)](https://github.com/tclement0922/jLSPlant/actions/workflows/android.yml)
 
 An unofficial Java implementation of the LSPlant hooking framework.
 
@@ -8,7 +8,7 @@ The aim of this library is providing a easier way to use the LSPlant framework, 
 provide an ART symbol resolver and a inline hook framework.
 
 ### Support
-Java-LSPlant has the same support as LSPlant:
+jLSPlant has the same support as LSPlant:
 > Support Android 5.0 - 13 (API level 21 - 33)
 > 
 > Support armeabi-v7a, arm64-v8a, x86, x86-64
@@ -32,4 +32,4 @@ support the case where `LSPlant.isInitialized()` returns false.
    > Licensed under the [Anti 996 License v1.0](https://github.com/996icu/996.ICU/blob/master/LICENSE), Copyright (C) [canyie](https://github.com/canyie)
  
 ### License
-Java-LSPlant is licensed under the [GNU Lesser General Public License v3.0](LICENSE), Copyright (C) 2022 T. Clément.
+jLSPlant is licensed under the [GNU Lesser General Public License v3.0](LICENSE), Copyright (C) 2022 T. Clément.

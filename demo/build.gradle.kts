@@ -39,7 +39,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":java-lsplant"))
+    implementation(project(":jlsplant"))
     implementation(AndroidX.core.ktx)
     implementation(AndroidX.appCompat)
     implementation(Google.android.material)

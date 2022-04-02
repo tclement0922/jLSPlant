@@ -1,0 +1,21 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:dev.tclement.jlsplant////PointingToDeclaration/jlsplant/dev.tclement.jlsplant/index.html
+$dokka.location:dev.tclement.jlsplant/LSPlant.Hooker.LSPlantHookFailed///PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/-hooker/-l-s-plant-hook-failed/index.html
+$dokka.location:dev.tclement.jlsplant/LSPlant.Hooker.LSPlantHookFailed/LSPlantHookFailed/#/PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/-hooker/-l-s-plant-hook-failed/-l-s-plant-hook-failed.html
+$dokka.location:dev.tclement.jlsplant/LSPlant.Hooker.MethodCallback///PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/-hooker/-method-callback/index.html
+$dokka.location:dev.tclement.jlsplant/LSPlant.Hooker.MethodCallback/args/#/PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/-hooker/-method-callback/args.html
+$dokka.location:dev.tclement.jlsplant/LSPlant.Hooker.MethodCallback/backup/#/PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/-hooker/-method-callback/backup.html
+$dokka.location:dev.tclement.jlsplant/LSPlant.Hooker///PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/-hooker/index.html
+$dokka.location:dev.tclement.jlsplant/LSPlant.Hooker/callback/#java.lang.Object[]/PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/-hooker/callback.html
+$dokka.location:dev.tclement.jlsplant/LSPlant///PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/index.html
+$dokka.location:dev.tclement.jlsplant/LSPlant/deoptimize/#java.lang.reflect.Member/PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/deoptimize.html
+$dokka.location:dev.tclement.jlsplant/LSPlant/hookMethod/#java.lang.Object#java.lang.reflect.Member#java.lang.reflect.Method/PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/hook-method.html
+$dokka.location:dev.tclement.jlsplant/LSPlant/hookMethod/#java.lang.reflect.Member#java.lang.reflect.Method/PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/hook-method.html
+$dokka.location:dev.tclement.jlsplant/LSPlant/hookMethodAdvanced/#java.lang.Object#java.lang.reflect.Member#java.lang.reflect.Method/PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/hook-method-advanced.html
+$dokka.location:dev.tclement.jlsplant/LSPlant/isHooked/#java.lang.reflect.Member/PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/is-hooked.html
+$dokka.location:dev.tclement.jlsplant/LSPlant/isInitialized/#/PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/is-initialized.html
+$dokka.location:dev.tclement.jlsplant/LSPlant/makeClassInheritable/#java.lang.Class<?>/PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/make-class-inheritable.html
+$dokka.location:dev.tclement.jlsplant/LSPlant/unhookMethod/#java.lang.reflect.Member/PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/unhook-method.html
+dev.tclement.jlsplant
+

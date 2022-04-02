@@ -14,21 +14,19 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program; if not, see <https://www.gnu.org/licenses/>
  *
+ * Copyright (C) 2020-2021 canyie <https://github.com/canyie>
  * Copyright (C) 2022 T. Clément <https://github.com/tclement0922>
  */
 
-plugins {
-    id("com.android.application") apply false
-    id("com.android.library") apply false
-    id("org.jetbrains.kotlin.android") apply false
-    id("org.jetbrains.dokka") apply false
-}
+#ifndef PINE_MACROS_H
+#define PINE_MACROS_H
 
-val androidBuildToolsVersion by extra("32.0.0")
-val androidCmakeVersion by extra("3.22.1") // Replace by your installed cmake version (cmake --version)
-val androidCompileSdkVersion by extra(32)
-val androidMinSdkVersion by extra(21)
-val androidNdkVersion by extra("23.1.7779620")
-val androidTargetSdkVersion by extra(32)
-val libVersionCode by extra(30001)
-val libVersionName by extra("3.1-01")
+#define LIKELY(x) __builtin_expect(!!(x), 1)
+#define UNLIKELY(x) __builtin_expect(!!(x), 0)
+
+#define DISALLOW_COPY_AND_ASSIGN(TypeName) \
+TypeName(const TypeName&) = delete;      \
+void operator=(const TypeName&) = delete
+
+
+#endif //PINE_MACROS_H

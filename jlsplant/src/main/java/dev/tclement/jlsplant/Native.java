@@ -14,21 +14,29 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program; if not, see <https://www.gnu.org/licenses/>
  *
- * Copyright (C) 2022 T. Clément <https://github.com/tclement0922>
+ * Copyright (C)  T. Clément <https://github.com/tclement0922>
  */
 
-plugins {
-    id("com.android.application") apply false
-    id("com.android.library") apply false
-    id("org.jetbrains.kotlin.android") apply false
-    id("org.jetbrains.dokka") apply false
-}
+package dev.tclement.jlsplant;
 
-val androidBuildToolsVersion by extra("32.0.0")
-val androidCmakeVersion by extra("3.22.1") // Replace by your installed cmake version (cmake --version)
-val androidCompileSdkVersion by extra(32)
-val androidMinSdkVersion by extra(21)
-val androidNdkVersion by extra("23.1.7779620")
-val androidTargetSdkVersion by extra(32)
-val libVersionCode by extra(30001)
-val libVersionName by extra("3.1-01")
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+
+/**
+ * jLSPlant native calls
+ */
+final class Native {
+    private Native() {}
+
+    static native boolean isNativeInitialized();
+
+    static native boolean isHooked(Member target);
+
+    static native boolean deoptimize(Member target);
+
+    static native Method hookMethod(Object owner, Member original, Method replacement);
+
+    static native boolean unhookMethod(Member target);
+
+    static native boolean makeClassInheritable(Class<?> target);
+}
