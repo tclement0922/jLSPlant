@@ -25,10 +25,13 @@ plugins {
 }
 
 val androidBuildToolsVersion by extra("32.0.0")
-val androidCmakeVersion by extra("3.22.1") // Replace by your installed cmake version (cmake --version)
+val androidCmakeVersion by extra("3.22.1") // Replace by installed cmake version (cmake --version)
 val androidCompileSdkVersion by extra(32)
 val androidMinSdkVersion by extra(21)
 val androidNdkVersion by extra("23.1.7779620")
 val androidTargetSdkVersion by extra(32)
+val libArtifactId by extra("jlsplant")
+val libGroupId by extra("dev.tclement.jlsplant")
+val libIsSnapshot by extra(true)
 val libVersionCode by extra(30001)
-val libVersionName by extra("3.1-01")
+val libVersionName by extra("3.2-01")

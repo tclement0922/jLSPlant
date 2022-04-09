@@ -18,10 +18,15 @@ else can break LSPlant, so if you plan to publish an app using this framework, d
 support the case where `LSPlant.isInitialized()` returns false.
 
 ### Example usage
-Download latest jlsplant-release.aar from Releases page, and add it to your project's build.gradle:
 ```gradle
+repositories {
+    maven { url = "https://github.com/tclement0922/jLSPlant/raw/maven" }
+}
+
 dependencies {
-    implementation(files("path/to/aar/jlsplant-release.aar"))
+    implementation("dev.tclement.jlsplant:jlsplant:3.1-01")
+    // or for latest (but maybe unstable) version:
+    implementation("dev.tclement.jlsplant:jlsplant:SNAPSHOT")
 }
 ```
 

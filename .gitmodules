@@ -6,3 +6,7 @@
 	path = lsplant/src/main/upstream
 	url = https://github.com/LSPosed/LSPlant
 	branch = master
+[submodule "maven-branch"]
+	path = maven
+	url = https://github.com/tclement0922/jLSPlant
+	branch = maven

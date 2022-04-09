@@ -17,17 +17,24 @@
  * Copyright (C) 2022 T. Clément <https://github.com/tclement0922>
  */
 
+import java.net.URI
+
 val androidBuildToolsVersion: String by rootProject.extra
 val androidCmakeVersion: String by rootProject.extra
 val androidCompileSdkVersion: Int by rootProject.extra
 val androidMinSdkVersion: Int by rootProject.extra
 val androidNdkVersion: String by rootProject.extra
 val androidTargetSdkVersion: Int by rootProject.extra
+val libArtifactId: String by rootProject.extra
+val libGroupId: String by rootProject.extra
+val libIsSnapshot: Boolean by rootProject.extra
+val libVersionName: String by rootProject.extra
 
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.dokka")
+    id("maven-publish")
 }
 
 android {
@@ -80,4 +87,37 @@ tasks.dokkaHtml.configure {
 dependencies {
     implementation(project(":dobby"))
     implementation(project(":lsplant"))
+}
+
+tasks.register("sourceJar", Jar::class) {
+    from(android.sourceSets.getByName("main").java.srcDirs)
+    archiveClassifier.set("source")
+}
+
+publishing {
+    publications {
+        repositories {
+            maven {
+                name = "LocalMaven"
+                url = URI("file://${rootDir}/maven")
+            }
+        }
+        if (libIsSnapshot) {
+            register<MavenPublication>("snapshot") {
+                groupId = libGroupId
+                artifactId = libArtifactId
+                version = "SNAPSHOT"
+                artifact("$buildDir/outputs/aar/jlsplant-release.aar")
+                artifact(tasks.getByName("sourceJar"))
+            }
+        } else {
+            register<MavenPublication>("release") {
+                groupId = libGroupId
+                artifactId = libArtifactId
+                version = libVersionName
+                artifact("$buildDir/outputs/aar/jlsplant-release.aar")
+                artifact(tasks.getByName("sourceJar"))
+            }
+        }
+    }
 }
