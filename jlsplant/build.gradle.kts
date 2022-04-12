@@ -17,7 +17,7 @@
  * Copyright (C) 2022 T. Clément <https://github.com/tclement0922>
  */
 
-import java.net.URI
+import java.net.URL
 
 val androidBuildToolsVersion: String by rootProject.extra
 val androidCmakeVersion: String by rootProject.extra
@@ -80,13 +80,33 @@ android {
     ndkVersion = androidNdkVersion
 }
 
-tasks.dokkaHtml.configure {
-    outputDirectory.set(rootDir.resolve("docs"))
-}
-
 dependencies {
     implementation(project(":dobby"))
     implementation(project(":lsplant"))
+    dokkaPlugin("org.jetbrains.dokka:dokka-base:_")
+    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:_")
+}
+
+tasks.dokkaHtml.configure {
+    outputDirectory.set(rootDir.resolve("docs"))
+    pluginsMapConfiguration.put(
+        "org.jetbrains.dokka.base.DokkaBase",
+        """{
+            "customStyleSheets" : ["${file("${rootDir}/docs/custom/logo-styles.css")}"],
+            "customAssets" : [],
+            "separateInheritedMembers": true
+        }"""
+    )
+    dokkaSourceSets {
+        named("main") {
+            sourceLink {
+                localDirectory.set(file("src/main/java"))
+                remoteUrl.set(URL("https://github.com/tclement0922/jLSPlant/tree/main/jlsplant/src/main/java"))
+                remoteLineSuffix.set("#L")
+            }
+            jdkVersion.set(11)
+        }
+    }
 }
 
 tasks.register("sourceJar", Jar::class) {
@@ -99,7 +119,7 @@ publishing {
         repositories {
             maven {
                 name = "LocalMaven"
-                url = URI("file://${rootDir}/maven")
+                url = uri("file://${rootDir}/maven")
             }
         }
         if (libIsSnapshot) {

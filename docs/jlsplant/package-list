@@ -2,10 +2,8 @@ $dokka.format:html-v1
 $dokka.linkExtension:html
 $dokka.location:dev.tclement.jlsplant////PointingToDeclaration/jlsplant/dev.tclement.jlsplant/index.html
 $dokka.location:dev.tclement.jlsplant/LSPlant.Hooker.LSPlantHookFailed///PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/-hooker/-l-s-plant-hook-failed/index.html
-$dokka.location:dev.tclement.jlsplant/LSPlant.Hooker.LSPlantHookFailed/LSPlantHookFailed/#/PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/-hooker/-l-s-plant-hook-failed/-l-s-plant-hook-failed.html
+$dokka.location:dev.tclement.jlsplant/LSPlant.Hooker.LSPlantHookFailed/LSPlant.Hooker.LSPlantHookFailed/#/PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/-hooker/-l-s-plant-hook-failed/-l-s-plant.-hooker.-l-s-plant-hook-failed.html
 $dokka.location:dev.tclement.jlsplant/LSPlant.Hooker.MethodCallback///PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/-hooker/-method-callback/index.html
-$dokka.location:dev.tclement.jlsplant/LSPlant.Hooker.MethodCallback/args/#/PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/-hooker/-method-callback/args.html
-$dokka.location:dev.tclement.jlsplant/LSPlant.Hooker.MethodCallback/backup/#/PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/-hooker/-method-callback/backup.html
 $dokka.location:dev.tclement.jlsplant/LSPlant.Hooker///PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/-hooker/index.html
 $dokka.location:dev.tclement.jlsplant/LSPlant.Hooker/callback/#java.lang.Object[]/PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/-hooker/callback.html
 $dokka.location:dev.tclement.jlsplant/LSPlant///PointingToDeclaration/jlsplant/dev.tclement.jlsplant/-l-s-plant/index.html
