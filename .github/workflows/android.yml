@@ -7,6 +7,7 @@ on:
       - '.github/**'
       - 'demo/**'
       - 'jlsplant/**'
+      - 'lsplant/**'
       - 'dobby/**'
       - 'gradle/**'
       - '**.gradle'
@@ -19,6 +20,7 @@ on:
       - '.github/**'
       - 'demo/**'
       - 'jlsplant/**'
+      - 'lsplant/**'
       - 'dobby/**'
       - 'gradle/**'
       - '**.gradle'
@@ -44,6 +46,13 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '11'
+      - name: Decode Keystore
+        env:
+          ENCODED_STRING: ${{ secrets.KEYSTORE }}
+        run: |
+          TMP_KEYSTORE_FILE_PATH="${RUNNER_TEMP}"/keystore
+          mkdir "${TMP_KEYSTORE_FILE_PATH}"
+          echo $ENCODED_STRING | base64 -di > "${TMP_KEYSTORE_FILE_PATH}"/jlsplant_demo.jks
       - name: Install Cmake
         run: sudo apt install cmake
       - name: Install Ninja
@@ -59,8 +68,20 @@ jobs:
         run: ./gradlew jlsplant:assembleRelease
       - name: Assemble debug demo with Gradle
         run: ./gradlew demo:assembleDebug
+        env:
+          KEYSTORE_PWD: ${{ secrets.KEYSTORE_PWD }}
+          KEYSTORE_DEBUG_ALIAS: ${{ secrets.KEYSTORE_DEBUG_ALIAS }}
+          KEYSTORE_DEBUG_PWD: ${{ secrets.KEYSTORE_DEBUG_PWD }}
+          KEYSTORE_RELEASE_ALIAS: ${{ secrets.KEYSTORE_RELEASE_ALIAS }}
+          KEYSTORE_RELEASE_PWD: ${{ secrets.KEYSTORE_RELEASE_PWD }}
       - name: Assemble release demo with Gradle
         run: ./gradlew demo:assembleRelease
+        env:
+          KEYSTORE_PWD: ${{ secrets.KEYSTORE_PWD }}
+          KEYSTORE_DEBUG_ALIAS: ${{ secrets.KEYSTORE_DEBUG_ALIAS }}
+          KEYSTORE_DEBUG_PWD: ${{ secrets.KEYSTORE_DEBUG_PWD }}
+          KEYSTORE_RELEASE_ALIAS: ${{ secrets.KEYSTORE_RELEASE_ALIAS }}
+          KEYSTORE_RELEASE_PWD: ${{ secrets.KEYSTORE_RELEASE_PWD }}
       - name: Upload debug lib
         uses: actions/upload-artifact@v3
         with:

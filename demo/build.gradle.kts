@@ -22,11 +22,34 @@ android {
         targetSdk = androidTargetSdkVersion
         versionCode = libVersionCode
         versionName = libVersionName
-        signingConfig = signingConfigs.getByName("debug")
+    }
+
+    if (System.getenv("CI") != null) {
+        signingConfigs {
+            val keystoreFile = file("${System.getenv("RUNNER_TEMP")}/keystore/jlsplant_demo.jks")
+            maybeCreate("debug").apply {
+                storeFile = keystoreFile
+                storePassword = System.getenv("KEYSTORE_PWD")
+                keyAlias = System.getenv("KEYSTORE_DEBUG_ALIAS")
+                keyPassword = System.getenv("KEYSTORE_DEBUG_PWD")
+            }
+            maybeCreate("release").apply {
+                storeFile = keystoreFile
+                storePassword = System.getenv("KEYSTORE_PWD")
+                keyAlias = System.getenv("KEYSTORE_RELEASE_ALIAS")
+                keyPassword = System.getenv("KEYSTORE_RELEASE_PWD")
+            }
+        }
     }
 
     buildTypes {
+        debug {
+            signingConfig = signingConfigs.getByName("debug")
+        }
         release {
+            if (System.getenv("CI") != null) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
