@@ -43,7 +43,7 @@ public final class LSPlant {
 
     static {
         try {
-            System.loadLibrary("java_lsplant");
+            System.loadLibrary("jlsplant");
             isLibLoaded = true;
         } catch (SecurityException | UnsatisfiedLinkError e) {
             Log.e("jLSPlant", "Failed to load java_lsplant native lib.", e);
@@ -231,14 +231,14 @@ public final class LSPlant {
              * if the original method isn't a static method, or {@code backup.invoke(null, args[0], ...)}
              * if it's static.
              */
-            public Method backup;
+            public final Method backup;
 
             /**
              * Method original arguments.
              * @implNote If the original method is not static, the first argument corresponds to
              *           {@code this} in the original method.
              */
-            public Object[] args;
+            public final Object[] args;
 
             MethodCallback(Method backup, Object[] args) {
                 this.backup = backup;

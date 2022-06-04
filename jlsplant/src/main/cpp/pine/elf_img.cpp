@@ -25,11 +25,19 @@
 #include <cstring>
 #include <sys/mman.h>
 #include <unistd.h>
+#include <type_traits>
+#include <link.h>
 #include "io_wrapper.h"
 #include "../logging/logging.h"
 #include "macros.h"
 
 using namespace pine;
+
+template<typename T>
+inline constexpr auto offsetOf(Elf_Ehdr *head, Elf_Off off) {
+    return reinterpret_cast<std::conditional_t<std::is_pointer_v<T>, T, T *>>(
+            reinterpret_cast<uintptr_t>(head) + off);
+}
 
 inline bool CanRead(const char* file) {
     return access(file, R_OK) == 0;
@@ -95,6 +103,26 @@ void ElfImg::Open(const char* path) {
                     bias = (off_t) section_h->sh_addr - (off_t) section_h->sh_offset;
                 }
                 break;
+            case SHT_HASH: {
+                auto *d_un = offsetOf<Elf32_Word *>(header, section_h->sh_offset);
+                nbucket_ = d_un[0];
+                bucket_ = d_un + 2;
+                chain_ = bucket_ + nbucket_;
+                break;
+            }
+            case SHT_GNU_HASH: {
+                auto *d_buf = reinterpret_cast<Elf_Addr *>(((size_t) header) +
+                                                             section_h->sh_offset);
+                gnu_nbucket_ = d_buf[0];
+                gnu_symndx_ = d_buf[1];
+                gnu_bloom_size_ = d_buf[2];
+                gnu_shift2_ = d_buf[3];
+                gnu_bloom_filter_ = reinterpret_cast<decltype(gnu_bloom_filter_)>(d_buf + 4);
+                gnu_bucket_ = reinterpret_cast<decltype(gnu_bucket_)>(gnu_bloom_filter_ +
+                                                                      gnu_bloom_size_);
+                gnu_chain_ = gnu_bucket_ + gnu_nbucket_ - gnu_symndx_;
+                break;
+            }
         }
     }
 
@@ -149,7 +177,7 @@ ElfImg::~ElfImg() {
     }
 }
 
-Elf_Addr ElfImg::getSymbolOffset(const char* name) const {
+Elf_Addr ElfImg::getSymbolOffset(const char* name, bool match_prefix) const {
     Elf_Addr _offset;
 
     //search dynmtab
@@ -157,11 +185,13 @@ Elf_Addr ElfImg::getSymbolOffset(const char* name) const {
         Elf_Sym* sym = dynsym_start;
         char* strings = (char*) strtab_start;
         int k;
-        for (k = 0; k < dynsym_count; k++, sym++)
-            if (strcmp(strings + sym->st_name, name) == 0) {
+        for (k = 0; k < dynsym_count; k++, sym++) {
+            char* s = strings + sym->st_name;
+            if (strcmp(s, name) == 0 || (match_prefix && strncmp(s, name, strlen(name)) == 0)) {
                 _offset = sym->st_value;
                 return _offset;
             }
+        }
     }
 
     //search symtab
@@ -172,7 +202,7 @@ Elf_Addr ElfImg::getSymbolOffset(const char* name) const {
                                                     symstr_offset_for_symtab +
                                                     symtab_start[i].st_name);
             if (st_type == STT_FUNC && symtab_start[i].st_size) {
-                if (strcmp(st_name, name) == 0) {
+                if (strcmp(st_name, name) == 0 || (match_prefix && strncmp(st_name, name, strlen(name)) == 0)) {
                     _offset = symtab_start[i].st_value;
                     return _offset;
                 }
@@ -183,8 +213,8 @@ Elf_Addr ElfImg::getSymbolOffset(const char* name) const {
     return 0;
 }
 
-void* ElfImg::getSymbolAddress(const char* name) const {
-    Elf_Addr offset = getSymbolOffset(name);
+void* ElfImg::getSymbolAddress(const char* name, bool match_prefix) const {
+    Elf_Addr offset = getSymbolOffset(name, match_prefix);
     if (LIKELY(offset > 0 && base != nullptr)) {
         return reinterpret_cast<void*>((uintptr_t) base + offset - bias);
     } else {

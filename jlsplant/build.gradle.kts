@@ -27,7 +27,7 @@ val androidNdkVersion: String by rootProject.extra
 val androidTargetSdkVersion: Int by rootProject.extra
 val libArtifactId: String by rootProject.extra
 val libGroupId: String by rootProject.extra
-val libIsSnapshot: Boolean by rootProject.extra
+val libNamespace: String by rootProject.extra
 val libVersionName: String by rootProject.extra
 
 plugins {
@@ -44,6 +44,7 @@ android {
     defaultConfig {
         minSdk = androidMinSdkVersion
         targetSdk = androidTargetSdkVersion
+        namespace = libNamespace
 
         consumerProguardFiles("consumer-rules.pro")
         externalNativeBuild {
@@ -122,22 +123,12 @@ publishing {
                 url = uri("file://${rootDir}/maven")
             }
         }
-        if (libIsSnapshot) {
-            register<MavenPublication>("snapshot") {
-                groupId = libGroupId
-                artifactId = libArtifactId
-                version = "SNAPSHOT"
-                artifact("$buildDir/outputs/aar/jlsplant-release.aar")
-                artifact(tasks.getByName("sourceJar"))
-            }
-        } else {
-            register<MavenPublication>("release") {
-                groupId = libGroupId
-                artifactId = libArtifactId
-                version = libVersionName
-                artifact("$buildDir/outputs/aar/jlsplant-release.aar")
-                artifact(tasks.getByName("sourceJar"))
-            }
+        register<MavenPublication>("release") {
+            groupId = libGroupId
+            artifactId = libArtifactId
+            version = libVersionName
+            artifact("$buildDir/outputs/aar/jlsplant-release.aar")
+            artifact(tasks.getByName("sourceJar"))
         }
     }
 }

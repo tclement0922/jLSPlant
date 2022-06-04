@@ -26,6 +26,8 @@
 #include <stdio.h>
 #include "macros.h"
 
+#define SHT_GNU_HASH 0x6ffffff6
+
 #if defined(__LP64__)
 typedef Elf64_Ehdr Elf_Ehdr;
 typedef Elf64_Shdr Elf_Shdr;
@@ -60,8 +62,8 @@ namespace pine {
                 RelativeOpen(elf);
             }
         }
-        Elf_Addr getSymbolOffset(const char* name) const;
-        void* getSymbolAddress(const char* name) const;
+        Elf_Addr getSymbolOffset(const char* name, bool match_prefix) const;
+        void* getSymbolAddress(const char* name, bool match_prefix=false) const;
 
         ~ElfImg();
 
@@ -101,6 +103,16 @@ namespace pine {
         Elf_Off dynsym_offset = 0;
         Elf_Off symtab_size = 0;
         Elf_Off dynsym_size = 0;
+        uint32_t nbucket_{};
+        uint32_t *bucket_ = nullptr;
+        uint32_t *chain_ = nullptr;
+        uint32_t gnu_nbucket_{};
+        uint32_t gnu_symndx_{};
+        uint32_t gnu_bloom_size_;
+        uint32_t gnu_shift2_;
+        uintptr_t *gnu_bloom_filter_;
+        uint32_t *gnu_bucket_;
+        uint32_t *gnu_chain_;
     };
 }
 

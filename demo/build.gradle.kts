@@ -7,6 +7,7 @@ val androidBuildToolsVersion: String by rootProject.extra
 val androidCompileSdkVersion: Int by rootProject.extra
 val androidMinSdkVersion: Int by rootProject.extra
 val androidTargetSdkVersion: Int by rootProject.extra
+val demoNamespace: String by rootProject.extra
 val libVersionCode: Int by rootProject.extra
 val libVersionName: String by rootProject.extra
 
@@ -15,7 +16,8 @@ android {
     buildToolsVersion = androidBuildToolsVersion
 
     defaultConfig {
-        applicationId = "dev.tclement.jlsplant.demo"
+        applicationId = demoNamespace
+        namespace = demoNamespace
         minSdk = androidMinSdkVersion
         targetSdk = androidTargetSdkVersion
         versionCode = libVersionCode

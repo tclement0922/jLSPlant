@@ -36,6 +36,7 @@ android {
     defaultConfig {
         minSdk = androidMinSdkVersion
         targetSdk = androidTargetSdkVersion
+        namespace = "org.lsposed.lsplant"
 
         consumerProguardFiles("consumer-rules.pro")
         externalNativeBuild {

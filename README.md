@@ -25,8 +25,6 @@ repositories {
 
 dependencies {
     implementation("dev.tclement.jlsplant:jlsplant:3.1-01")
-    // or for latest (but maybe unstable) version:
-    implementation("dev.tclement.jlsplant:jlsplant:SNAPSHOT")
 }
 ```
 

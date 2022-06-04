@@ -8,6 +8,7 @@ pluginManagement {
 
 plugins {
     id("de.fayard.refreshVersions") version "0.40.1"
+////                            # available:"0.40.2"
 }
 
 dependencyResolutionManagement {
@@ -20,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "jLSPlant"
 
-include(":demo", ":jlsplant", "lsplant", "dobby")
+include(":demo", ":jlsplant", ":lsplant", ":dobby")

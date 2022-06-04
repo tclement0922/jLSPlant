@@ -37,6 +37,7 @@ android {
     defaultConfig {
         minSdk = androidMinSdkVersion
         targetSdk = androidTargetSdkVersion
+        namespace = "dev.tclement.dobby"
 
         consumerProguardFiles("consumer-rules.pro")
         externalNativeBuild {

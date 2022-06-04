@@ -90,7 +90,7 @@ JNI_OnLoad(JavaVM* vm, [[maybe_unused]] void* reserved) {
         return JNI_ERR;
     }
     pine::ElfImg art("libart.so");
-    lsplant::v1::InitInfo initInfo{
+    lsplant::v2::InitInfo initInfo{
             .inline_hooker = [](void* target, void* hooker) -> void* {
                 make_rwx(target, page_size);
                 void* origin_call;
@@ -104,11 +104,13 @@ JNI_OnLoad(JavaVM* vm, [[maybe_unused]] void* reserved) {
                 return DobbyDestroy(func) == RT_SUCCESS;
             },
             .art_symbol_resolver = [&art](std::string_view symbol) -> void* {
-                auto* out = reinterpret_cast<void*>(art.getSymbolAddress(symbol.data()));
-                return out;
+                return art.getSymbolAddress(symbol.data());
+            },
+            .art_symbol_prefix_resolver = [&art](std::string_view symbol) -> void* {
+                return art.getSymbolAddress(symbol.data(), true);
             }
     };
-    initialized = lsplant::v1::Init(env, initInfo);
+    initialized = lsplant::v2::Init(env, initInfo);
     if (initialized) {
         LOGI("LSPlant initialized");
     } else {
