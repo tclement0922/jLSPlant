@@ -26,18 +26,18 @@ android {
 
     if (System.getenv("CI") != null) {
         signingConfigs {
-            val keystoreFile = file("${System.getenv("RUNNER_TEMP")}/keystore/jlsplant_demo.jks")
+            val keystoreFile = file("${System.getenv("RUNNER_TEMP")}/keystore/jlsplant.jks")
             maybeCreate("debug").apply {
                 storeFile = keystoreFile
                 storePassword = System.getenv("KEYSTORE_PWD")
                 keyAlias = System.getenv("KEYSTORE_DEBUG_ALIAS")
-                keyPassword = System.getenv("KEYSTORE_DEBUG_PWD")
+                keyPassword = System.getenv("KEYSTORE_PWD")
             }
             maybeCreate("release").apply {
                 storeFile = keystoreFile
                 storePassword = System.getenv("KEYSTORE_PWD")
                 keyAlias = System.getenv("KEYSTORE_RELEASE_ALIAS")
-                keyPassword = System.getenv("KEYSTORE_RELEASE_PWD")
+                keyPassword = System.getenv("KEYSTORE_PWD")
             }
         }
     }
