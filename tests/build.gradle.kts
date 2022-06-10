@@ -22,6 +22,7 @@ android {
         targetSdk = androidTargetSdkVersion
         versionCode = libVersionCode
         versionName = libVersionName
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     if (System.getenv("CI") != null) {
@@ -65,8 +66,11 @@ android {
 
 dependencies {
     implementation(project(":jlsplant"))
-    implementation(AndroidX.core.ktx)
     implementation(AndroidX.appCompat)
-    implementation(Google.android.material)
     implementation(AndroidX.constraintLayout)
+    implementation(AndroidX.core.ktx)
+    implementation(Google.android.material)
+    androidTestImplementation(AndroidX.test.espresso.core)
+    androidTestImplementation(AndroidX.test.ext.junitKtx)
+    androidTestImplementation(AndroidX.test.runner)
 }
