@@ -31,14 +31,22 @@ on:
 
 jobs:
   build:
-
+    name: Build
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           submodules: 'recursive'
+      - name: Load Gradle cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
       - name: Install Android SDK
         uses: malinskiy/action-android/install-sdk@release/0.1.2
       - name: Set up JDK 11
@@ -79,3 +87,142 @@ jobs:
           files: |
             jlsplant/build/outputs/aar/jlsplant-debug.aar
             jlsplant/build/outputs/aar/jlsplant-release.aar
+
+  test:
+    needs: build
+    name: Run tests on API ${{ matrix.api-level }} ${{ matrix.arch }}
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - api-level: 21
+            target: default
+            arch: x86_64
+          - api-level: 21
+            target: default
+            arch: x86
+          - api-level: 22
+            target: default
+            arch: x86_64
+          - api-level: 22
+            target: default
+            arch: x86
+          - api-level: 23
+            target: default
+            arch: x86_64
+          - api-level: 23
+            target: default
+            arch: x86
+          - api-level: 24
+            target: default
+            arch: x86_64
+          - api-level: 24
+            target: default
+            arch: x86
+          - api-level: 25
+            target: default
+            arch: x86_64
+          - api-level: 25
+            target: default
+            arch: x86
+          - api-level: 26
+            target: default
+            arch: x86_64
+          - api-level: 26
+            target: default
+            arch: x86
+          - api-level: 27
+            target: default
+            arch: x86_64
+          - api-level: 27
+            target: default
+            arch: x86
+          - api-level: 28
+            target: default
+            arch: x86_64
+          - api-level: 28
+            target: default
+            arch: x86
+          - api-level: 29
+            target: default
+            arch: x86_64
+          - api-level: 29
+            target: default
+            arch: x86
+          - api-level: 30
+            target: default
+            arch: x86_64
+          - api-level: 30
+            target: google_apis  # The AOSP variant isn't available for x86
+            arch: x86
+          - api-level: 31
+            target: default
+            arch: x86_64
+          - api-level: 31
+            target: android-tv  # The AOSP variant isn't available for x86
+            arch: x86
+          - api-level: 32
+            target: google_apis  # The AOSP variant isn't available at all, as for x86 images
+            arch: x86_64
+          - api-level: 33
+            target: google_apis  # Same as API 32
+            arch: x86_64
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+      - name: Load Gradle cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Install Ninja
+        run: brew install ninja
+      - name: Declare Cmake version in gradle.properties
+        run: cat build.gradle.kts | sed "s/val androidCmakeVersion by extra\(.*\)/val androidCmakeVersion by extra\(\"$(cmake --version | sed -n -e 's/cmake version //p')\"\)/g" > build.gradle.kts
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      - name: Load AVD cache
+        uses: actions/cache@v3
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ matrix.api-level }}-${{ matrix.arch }}-${{ matrix.target }}
+      - name: Create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          arch: ${{ matrix.arch }}
+          target: ${{ matrix.target }}
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching."
+      - name: Run unit tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          arch: ${{ matrix.arch }}
+          target: ${{ matrix.target }}
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: ./gradlew :tests:connectedCheck
+      - name: Upload outputs
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-outputs-API_${{ matrix.api-level }}-${{ matrix.arch }}-${{ matrix.target }}
+          path: test/build/outputs/androidTest-results/connected
