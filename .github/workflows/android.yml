@@ -224,5 +224,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v2
         with:
-          name: test-outputs-API_${{ matrix.api-level }}-${{ matrix.arch }}-${{ matrix.target }}
-          path: test/build/outputs/androidTest-results/connected
+          name: tests-outputs-API_${{ matrix.api-level }}-${{ matrix.arch }}-${{ matrix.target }}
+          path: tests/build/outputs/androidTest-results/connected
