@@ -1,3 +1,7 @@
+> ##  UNMAINTAINED
+> ### This project is currently not maintained because it contains too many bugs and I don't have enough knowledge about ART and C++ to fix them. I archive it accordingly, but I could always start working on it again later.
+
+
 # jLSPlant
 
 [![Android CI](https://github.com/tclement0922/jLSPlant/actions/workflows/android.yml/badge.svg?branch=main)](https://github.com/tclement0922/jLSPlant/actions/workflows/android.yml)
